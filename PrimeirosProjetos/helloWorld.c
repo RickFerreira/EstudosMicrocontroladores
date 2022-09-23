@@ -1,7 +1,7 @@
 /*
  * Projeto: Hello World!!
  * Placa: STM32F4VEx
- * Descrição: Ligando led da placa dando pulsos diferentes cada vez menores
+ * DescriÃ§Ã£o: Ligando led da placa e desligando
  * Autor: Patricia Santos e Richard Ferreira
 */
 
@@ -19,10 +19,10 @@ int main(void)
 
 	while(1){ //void loop
 
-		GPIOA->ODR |= (1 << 6); // Nível lógico alto no pino 6
+		GPIOA->ODR |= (1 << 6); // NÃ­vel lÃ³gico alto no pino 6
 		atraso(1000000); // Aguarda um tempo
 
-		GPIOA->ODR &= ~(1 << 6); // Nível lógico baixo no pino 6
+		GPIOA->ODR &= ~(1 << 6); // NÃ­vel lÃ³gico baixo no pino 6
 		atraso(1000000); // Aguarda um tempo
 	}
 }
