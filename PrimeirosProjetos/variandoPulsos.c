@@ -1,7 +1,7 @@
 /*
- * Projeto: Hello World!!
+ * Projeto: Variando os pulsos de clock
  * Placa: STM32F4VEx
- * Descrição: Ligando led da placa dando pulsos diferentes cada vez menores
+ * DescriÃ§Ã£o: Ligando led da placa dando pulsos diferentes cada vez menores
  * Autor: Patricia Santos e Richard Ferreira
 */
 
@@ -25,12 +25,12 @@ int main(void)
 
 		while(apagado > 0){ //Enquanto apagado maior que 0 continua decrementando o tempo apagado
 
-			GPIOA->ODR |= (1 << 6); // Nível lógico alto no pino 6
+			GPIOA->ODR |= (1 << 6); // NÃ­vel lÃ³gico alto no pino 6
 			Delay(apagado); // Aguarda um tempo
 
 			apagado -= 1000000; // Decrementa o valor
 
-			GPIOA->ODR &= ~(1 << 6); // Nível lógico baixo no pino 6
+			GPIOA->ODR &= ~(1 << 6); // NÃ­vel lÃ³gico baixo no pino 6
 			Delay(100000); // Aguarda um tempo
 		}
 	}
