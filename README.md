@@ -1,6 +1,6 @@
 <div align="center">
      
-# EtudosMicrocontroladores   
+# EstudosMicrocontroladores   
   
 <h4> Repositorio para armazenar todos os projetos e práticas feitas durante a disciplina de microcontroladores e microprocessadores. Utilizando a linguagem C, o microcontrolador STM32F407VETX e a IDE System Workbench for STM32.
 </h4>    
@@ -48,6 +48,6 @@
   </tr>
 </table>
 
-[☝🏽 Voltar ao topo](# EtudosMicrocontroladores )<br>
+[☝🏽 Voltar ao topo](#EstudosMicrocontroladores )<br>
 
 </div>
