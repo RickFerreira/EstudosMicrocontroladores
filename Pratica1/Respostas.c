@@ -19,6 +19,11 @@
 #define BUZZER_OFF8 GPIOA->ODR |= (1<<8)   //Desliga o buzzer
 #define BUZZER_ON8 GPIOA->ODR &= ~(1<<8)   //Liga o buzzer
 
+//definindo os botões
+#define k0 !(GPIOE->IDR & (1<<4)) //testando se o botão K0 tá pressionado fazendo um AND com o valor 1 na posição 4 (botão pressionado)
+#define kup (GPIOA->IDR & (1)) //testando se o botão K_UP tá pressionado fazendo um AND com o valor 1 na posição 4 (botão pressionado)
+#define k1 !(GPIOE->IDR & (1<<3)) //testando o botão K1 á pressionado fazendo um AND com o valor 1 na posição 3 (botão pressionado)
+
 
 void questao1(void);
 void questao2(void);
@@ -47,6 +52,9 @@ void questao24(void);
 void questao25(void);
 void questao26(void);
 void questao27(void);
+void questao28(void);
+void questao29(void);
+void questao30(void);
 
 
 
@@ -67,28 +75,53 @@ int main(void)
     //Buzzer
     GPIOA->MODER |= (0b01 << 16);    //configura o pino PA8 como saída (BUZZER)
 
-    //GPIOE->MODER &= ~(0b11 << 6);    //configurando o pino PE3 como entrada (botão k1)
-    //GPIOE->PUPDR |= (0b01 << 6);     //liga o resistor de pull-up no pino PE3 (pra garantir nível alto quando a chave estiver solta)
-
     //Botões
+    GPIOE->MODER &= ~(0b11 << 6);    //configurando o pino PE3 como entrada (botão k1)
+    GPIOE->PUPDR |= (0b01 << 6);     //liga o resistor de pull-up no pino PE3 (pra garantir nível alto quando a chave estiver solta)
+
     GPIOE->MODER &= ~(0b11 << 8);    //configurando o pino PE4 como entrada (botão k0)
     GPIOE->PUPDR |= (0b01 << 8);     //liga o resistor de pull-up no pino PE4 (pra garantir nível alto quando a chave estiver solta)
 
     GPIOA->MODER &= ~(0b00 << 0);    //configurando o pino PA0 como entrada (botão k_up)
     GPIOA->PUPDR |= (0b10 << 0);     //liga o resistor de pull-down no pino PA0 (pra garantir nível alto quando a chave estiver solta)
 
+    LED_OFF6;
+    LED_OFF7;
 
-
+    //Chamando as funções de cada questão
 
 	//questao1();
 	//questao2();
 	//questao3();
 	//questao4();
-	questao5();
-
+	//questao5();
+	//questao6();
+	//questao7();
+	//questao8();
+	//questao9();
+	//questao10();
+	//questao11();
+	//questao12();
+	//questao13();
+	//questao14();
+	//questao15();
+	//questao16();
+	//questao17();
+	//questao18();
+	//questao19();
+	//questao20();
+	questao21();
+	//questao22();
+	//questao23();
+	//questao24();
+	//questao25();
+	//questao26();
+	//questao27();
+	//questao28();
+	//questao29();
+	//questao30();
 
 }
-
 
 void questao1()
 {
@@ -114,7 +147,6 @@ void questao2()
 
 void questao3()
 {
-
     while(1)
     {
     	LED_ON6;
@@ -162,4 +194,213 @@ void questao5()
     }
 }
 
+void questao6()
+{
+    while(1)
+    {
+    	LED_ON6;
+    	LED_ON7;
+    	Delay_us(1000);
+    	LED_OFF6;
+    	LED_OFF7;
+    	Delay_us(9000);
+    }
+}
 
+void questao7()
+{
+    while(1)
+    {
+    	LED_OFF6;
+    	LED_OFF7;
+    	Delay_us(1000000);
+
+    	for(int i=0; i<=9000; i+=30)
+    	{
+        	LED_ON6;
+        	LED_ON7;
+        	Delay_us(i);
+        	LED_OFF6;
+        	LED_OFF7;
+        	Delay_us(9000-i);
+    	}
+    	for(int i=0; i<=9000; i+=30)
+    	{
+        	LED_ON6;
+        	LED_ON7;
+        	Delay_us(9000-i);
+        	LED_OFF6;
+        	LED_OFF7;
+        	Delay_us(i);
+    	}
+    }
+}
+
+void questao8()
+{
+    while(1)
+    {
+    	LED_ON6;
+    	LED_OFF7;
+    	Delay_ms(250);
+    	LED_OFF6;
+    	LED_ON7;
+    	Delay_ms(250);
+    }
+}
+
+void questao9()
+{
+    while(1)
+    {
+    	//00
+    	LED_OFF6;
+    	LED_OFF7;
+    	Delay_ms(1000);
+    	//01
+    	LED_OFF6;
+    	LED_ON7;
+    	Delay_ms(1000);
+    	//10
+    	LED_ON6;
+    	LED_OFF7;
+    	Delay_ms(1000);
+    	//11
+    	LED_ON6;
+    	LED_ON7;
+    	Delay_ms(1000);
+    }
+}
+
+void questao10()
+{
+    while(1)
+    {
+    	for(int i=0; i<=9000; i+=20)
+    	{
+        	LED_ON6;
+        	LED_OFF7;
+        	Delay_us(i);
+        	LED_OFF6;
+        	LED_ON7;
+        	Delay_us(9000-i);
+    	}
+    	for(int i=9000; i>=0; i-=20)
+    	{
+        	LED_OFF6;
+        	LED_ON7;
+        	Delay_us(9000-i);
+        	LED_ON6;
+        	LED_OFF7;
+        	Delay_us(i);
+    	}
+    }
+}
+
+void questao11()
+{
+
+}
+
+void questao12()
+{
+
+}
+
+void questao13()
+{
+
+}
+
+void questao14()
+{
+
+}
+
+void questao15()
+{
+
+}
+
+void questao16()
+{
+
+}
+
+void questao17()
+{
+
+}
+
+void questao18()
+{
+
+}
+
+void questao19()
+{
+
+}
+
+void questao20()
+{
+
+}
+
+void questao21()
+{
+    while(1)
+    {
+		if(kup){
+			LED_ON6;
+		}
+		else{
+			LED_OFF6;
+		}
+    }
+}
+
+void questao22()
+{
+
+}
+
+void questao23()
+{
+
+}
+
+void questao24()
+{
+
+}
+
+void questao25()
+{
+
+}
+
+void questao26()
+{
+
+}
+
+void questao27()
+{
+
+}
+
+void questao28()
+{
+
+}
+
+void questao29()
+{
+
+}
+
+void questao30()
+{
+
+}
