@@ -110,8 +110,8 @@ int main(void)
 	//questao18();
 	//questao19();
 	//questao20();
-	questao21();
-	//questao22();
+	//questao21();
+	questao22();
 	//questao23();
 	//questao24();
 	//questao25();
@@ -362,7 +362,19 @@ void questao21()
 
 void questao22()
 {
-
+    while(1)
+    {
+		if(kup){
+			LED_ON6;
+		}
+		if(k0){
+			LED_ON7;
+		}
+		else{
+			LED_OFF6;
+			LED_OFF7;
+		}
+    }
 }
 
 void questao23()
@@ -372,7 +384,30 @@ void questao23()
 
 void questao24()
 {
+	while(1)
+	    {
+	    	//Deslisga os dois leds por default pois os botões estão soltos
+			LED_OFF6;
+			LED_OFF7;
 
+	    	if(k0 && !k1){ //Se k0 pressionado e k1 estiver solto
+	    		while(k0) //Enquanto k0 estiver pressionado vou vendo se o k1 foi acionado tbm
+	    		{
+	    			if(k1) //Se k1 pressionado
+	    			{
+	    				//liga os dois leds
+	    				LED_ON6;
+	    				LED_ON7;
+	    			}
+	    			else //Se k1 estiver solto
+	    			{
+	    				//desliga os dois leds
+	    	    		LED_OFF6;
+	    	    		LED_OFF7;
+	    			}
+	    		}
+	    	}
+	    }
 }
 
 void questao25()
