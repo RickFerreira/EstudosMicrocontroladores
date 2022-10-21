@@ -34,6 +34,8 @@
 #define LED_OFF7 GPIOA->ODR  &= ~(1<<7)   //Desliga o led
 #define LED_ON7 GPIOA->ODR |= (1<<7)   //Liga o led
 
+#define LED_OFF LED_OFF0; LED_OFF1; LED_OFF2; LED_OFF3; LED_OFF4; LED_OFF5; LED_OFF6; LED_OFF7;
+
 #define BUZZER_OFF8 GPIOA->ODR |= (1<<8)   //Desliga o buzzer
 #define BUZZER_ON8 GPIOA->ODR &= ~(1<<8)   //Liga o buzzer
 
@@ -66,7 +68,7 @@ void questao18(void);
 void questao19(void);
 void questao20(void);
 void questao21(void);
-void questa022(void);
+void questao22(void);
 void questao23(void);
 void questao24(void);
 void questao25(void);
@@ -332,96 +334,11 @@ void questao10()
 
 void questao11()
 {
-
-		int num = 0;
-		int vet_bin[MAX];
-		int i = 0, j;
-
-
-		while(num>0){
-			vet_bin[i] = num%2;
-			i++;
-			num = num/2;
-		}
-
-
-		for(j = i -1; j>=0; j--){
-			if(j == 0){
-				if(vet_bin[j] == 0){
-					LED_OFF0;
-				}
-				else{
-					LED_ON0;
-				}
-			}
-			if(j == 1){
-				if(vet_bin[j] == 0){
-					LED_OFF1;
-				}
-				else{
-					LED_ON1;
-				}
-			}
-			if(j == 2){
-				if(vet_bin[j] == 0){
-					LED_OFF2;
-				}
-				else{
-					LED_ON2;
-				}
-			}
-			if(j == 3){
-				if(vet_bin[j] == 0){
-					LED_OFF3;
-				}
-				else{
-					LED_ON3;
-				}
-			}
-			if(j == 4){
-				if(vet_bin[j] == 0){
-					LED_OFF4;
-				}
-				else{
-					LED_ON4;
-				}
-			}
-			if(j == 5){
-				if(vet_bin[j] == 0){
-					LED_OFF5;
-				}
-				else{
-					LED_ON5;
-				}
-			}
-			if(j == 6){
-				if(vet_bin[j] == 0){
-					LED_OFF6;
-				}
-				else{
-					LED_ON6;
-				}
-			}
-			if(j == 7){
-				if(vet_bin[j] == 0){
-					LED_OFF7;
-				}
-				else{
-					LED_ON7;
-				}
-			}
-		}
-			Delay_ms(5000);
-			LED_OFF0;
-			LED_OFF1;
-			LED_OFF2;
-			LED_OFF3;
-			LED_OFF4;
-			LED_OFF5;
-			LED_OFF6;
-			LED_OFF7;
-
-
+	for(int i=0; i<256; i++){
+		GPIOA->ODR |= (i);
+		Delay_ms(2000);
+		LED_OFF;
+	}
 }
 
 void questao12()
