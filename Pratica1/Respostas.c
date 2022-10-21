@@ -10,11 +10,29 @@
 
 
 //definindo leds
-#define LED_OFF6 GPIOA->ODR |= (1<<6) //Desliga o led
-#define LED_ON6 GPIOA->ODR &= ~(1<<6) //Liga o led
+#define LED_OFF0 GPIOA->ODR &= ~(1<<0) //Desliga o led
+#define LED_ON0 GPIOA->ODR |= (1<<0) //Liga o led
 
-#define LED_OFF7 GPIOA->ODR |= (1<<7)   //Desliga o led
-#define LED_ON7 GPIOA->ODR &= ~(1<<7)   //Liga o led
+#define LED_OFF1 GPIOA->ODR  &= ~(1<<1) //Desliga o led
+#define LED_ON1 GPIOA->ODR |=(1<<1) //Liga o led
+
+#define LED_OFF2 GPIOA->ODR  &= ~(1<<2) //Desliga o led
+#define LED_ON2 GPIOA->ODR |= (1<<2) //Liga o led
+
+#define LED_OFF3 GPIOA->ODR &= ~(1<<3) //Desliga o led
+#define LED_ON3 GPIOA->ODR |= (1<<3) //Liga o led
+
+#define LED_OFF4 GPIOA->ODR &= ~(1<<4) //Desliga o led
+#define LED_ON4 GPIOA->ODR |=  (1<<4) //Liga o led
+
+#define LED_OFF5 GPIOA->ODR &= ~(1<<5) //Desliga o led
+#define LED_ON5 GPIOA->ODR |=  (1<<5) //Liga o led
+
+#define LED_OFF6 GPIOA->ODR &= ~(1<<6) //Desliga o led
+#define LED_ON6 GPIOA->ODR |= (1<<6) //Liga o led
+
+#define LED_OFF7 GPIOA->ODR  &= ~(1<<7)   //Desliga o led
+#define LED_ON7 GPIOA->ODR |= (1<<7)   //Liga o led
 
 #define BUZZER_OFF8 GPIOA->ODR |= (1<<8)   //Desliga o buzzer
 #define BUZZER_ON8 GPIOA->ODR &= ~(1<<8)   //Liga o buzzer
@@ -23,6 +41,8 @@
 #define k0 !(GPIOE->IDR & (1<<4)) //testando se o botão K0 tá pressionado fazendo um AND com o valor 1 na posição 4 (botão pressionado)
 #define kup (GPIOA->IDR & (1)) //testando se o botão K_UP tá pressionado fazendo um AND com o valor 1 na posição 4 (botão pressionado)
 #define k1 !(GPIOE->IDR & (1<<3)) //testando o botão K1 á pressionado fazendo um AND com o valor 1 na posição 3 (botão pressionado)
+
+#define MAX 8
 
 
 void questao1(void);
@@ -69,6 +89,12 @@ int main(void)
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOEEN; //habilita o clock do GPIOE
 
     //Leds
+    GPIOA->MODER |= (0b01 << 0);    //configura o pino PA6 como saída (LED D2)
+    GPIOA->MODER |= (0b01 << 2);    //configura o pino PA7 como saída (LED D3)
+    GPIOA->MODER |= (0b01 << 4);    //configura o pino PA6 como saída (LED D2)
+    GPIOA->MODER |= (0b01 << 6);    //configura o pino PA7 como saída (LED D3)
+    GPIOA->MODER |= (0b01 << 8);    //configura o pino PA6 como saída (LED D2)
+    GPIOA->MODER |= (0b01 << 10);    //configura o pino PA7 como saída (LED D3)
     GPIOA->MODER |= (0b01 << 12);    //configura o pino PA6 como saída (LED D2)
     GPIOA->MODER |= (0b01 << 14);    //configura o pino PA7 como saída (LED D3)
 
@@ -85,6 +111,13 @@ int main(void)
     GPIOA->MODER &= ~(0b00 << 0);    //configurando o pino PA0 como entrada (botão k_up)
     GPIOA->PUPDR |= (0b10 << 0);     //liga o resistor de pull-down no pino PA0 (pra garantir nível alto quando a chave estiver solta)
 
+    //Todos os leds começam desligados
+    LED_OFF0;
+    LED_OFF1;
+    LED_OFF2;
+    LED_OFF3;
+    LED_OFF4;
+    LED_OFF5;
     LED_OFF6;
     LED_OFF7;
 
@@ -100,7 +133,7 @@ int main(void)
 	//questao8();
 	//questao9();
 	//questao10();
-	//questao11();
+	questao11();
 	//questao12();
 	//questao13();
 	//questao14();
@@ -111,7 +144,7 @@ int main(void)
 	//questao19();
 	//questao20();
 	//questao21();
-	questao22();
+	//questao22();
 	//questao23();
 	//questao24();
 	//questao25();
@@ -300,6 +333,95 @@ void questao10()
 void questao11()
 {
 
+		int num = 0;
+		int vet_bin[MAX];
+		int i = 0, j;
+
+
+		while(num>0){
+			vet_bin[i] = num%2;
+			i++;
+			num = num/2;
+		}
+
+
+		for(j = i -1; j>=0; j--){
+			if(j == 0){
+				if(vet_bin[j] == 0){
+					LED_OFF0;
+				}
+				else{
+					LED_ON0;
+				}
+			}
+			if(j == 1){
+				if(vet_bin[j] == 0){
+					LED_OFF1;
+				}
+				else{
+					LED_ON1;
+				}
+			}
+			if(j == 2){
+				if(vet_bin[j] == 0){
+					LED_OFF2;
+				}
+				else{
+					LED_ON2;
+				}
+			}
+			if(j == 3){
+				if(vet_bin[j] == 0){
+					LED_OFF3;
+				}
+				else{
+					LED_ON3;
+				}
+			}
+			if(j == 4){
+				if(vet_bin[j] == 0){
+					LED_OFF4;
+				}
+				else{
+					LED_ON4;
+				}
+			}
+			if(j == 5){
+				if(vet_bin[j] == 0){
+					LED_OFF5;
+				}
+				else{
+					LED_ON5;
+				}
+			}
+			if(j == 6){
+				if(vet_bin[j] == 0){
+					LED_OFF6;
+				}
+				else{
+					LED_ON6;
+				}
+			}
+			if(j == 7){
+				if(vet_bin[j] == 0){
+					LED_OFF7;
+				}
+				else{
+					LED_ON7;
+				}
+			}
+		}
+			Delay_ms(5000);
+			LED_OFF0;
+			LED_OFF1;
+			LED_OFF2;
+			LED_OFF3;
+			LED_OFF4;
+			LED_OFF5;
+			LED_OFF6;
+			LED_OFF7;
+
+
 }
 
 void questao12()
@@ -362,19 +484,31 @@ void questao21()
 
 void questao22()
 {
-    while(1)
-    {
+	while(1)
+	{
 		if(kup){
 			LED_ON6;
+			if(k0){
+				LED_ON7;
+			}
+			else{
+				LED_OFF7;
+			}
 		}
-		if(k0){
+		else if(k0){
 			LED_ON7;
+			if(kup){
+				LED_ON6;
+			}
+			else{
+				LED_OFF6;
+			}
 		}
 		else{
 			LED_OFF6;
 			LED_OFF7;
 		}
-    }
+	}
 }
 
 void questao23()
