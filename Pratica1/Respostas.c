@@ -114,14 +114,7 @@ int main(void)
     GPIOA->PUPDR |= (0b10 << 0);     //liga o resistor de pull-down no pino PA0 (pra garantir nível alto quando a chave estiver solta)
 
     //Todos os leds começam desligados
-    LED_OFF0;
-    LED_OFF1;
-    LED_OFF2;
-    LED_OFF3;
-    LED_OFF4;
-    LED_OFF5;
-    LED_OFF6;
-    LED_OFF7;
+    LED_OFF;
 
     //Chamando as funções de cada questão
 
@@ -135,7 +128,7 @@ int main(void)
 	//questao8();
 	//questao9();
 	//questao10();
-	questao11();
+	//questao11();
 	//questao12();
 	//questao13();
 	//questao14();
@@ -147,7 +140,7 @@ int main(void)
 	//questao20();
 	//questao21();
 	//questao22();
-	//questao23();
+	questao23();
 	//questao24();
 	//questao25();
 	//questao26();
@@ -334,26 +327,116 @@ void questao10()
 
 void questao11()
 {
-	for(int i=0; i<256; i++){
-		GPIOA->ODR |= (i);
-		Delay_ms(2000);
-		LED_OFF;
+	while(1){
+		for(int i=0; i<256; i++){
+			GPIOA->ODR |= (i);
+			Delay_ms(1000);
+			LED_OFF;
+		}
 	}
 }
 
 void questao12()
 {
-
+	while(1){
+		int cont = 1;
+		LED_ON0;
+		Delay_ms(100);
+		LED_OFF;
+		for(int i=1; i<9; i++){
+			cont = 2*cont;
+			GPIOA->ODR |= (cont);
+			Delay_ms(100);
+			LED_OFF;
+		}
+		for(int i=1; i<9; i++){
+			cont = cont/2;
+			GPIOA->ODR |= (cont);
+			Delay_ms(100);
+			LED_OFF;
+		}
+	}
 }
 
 void questao13()
 {
-
+	while(1){
+		GPIOA->ODR |= (33);
+		Delay_ms(3000);
+		LED_OFF;
+		GPIOA->ODR |= (34);
+		Delay_ms(2000);
+		LED_OFF;
+		GPIOA->ODR |= (12);
+		Delay_ms(3000);
+		LED_OFF;
+		GPIOA->ODR |= (20);
+		Delay_ms(2000);
+		LED_OFF;
+	}
 }
 
 void questao14()
 {
-
+	while(1){
+		LED_OFF;
+		for(int i=1; i<=9; i++){
+			if(i == 1){
+				GPIOA->ODR |= (6);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 2){
+				GPIOA->ODR |= (91);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 3){
+				GPIOA->ODR |= (79);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 4){
+				GPIOA->ODR |= (102);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 5){
+				GPIOA->ODR |= (109);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 6){
+				GPIOA->ODR |= (124);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 7){
+				GPIOA->ODR |= (7);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 8){
+				GPIOA->ODR |= (127);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 9){
+				GPIOA->ODR |= (103);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+		}
+	}
 }
 
 void questao15()
@@ -430,7 +513,19 @@ void questao22()
 
 void questao23()
 {
-
+	int estado = 0;
+	while(1){
+		if(k0){
+			if(estado == 1){
+				LED_OFF6;
+				estado = 0;
+			}
+			else if(estado == 0){
+				LED_ON6;
+				estado = 1;
+			}
+		}
+	}
 }
 
 void questao24()
