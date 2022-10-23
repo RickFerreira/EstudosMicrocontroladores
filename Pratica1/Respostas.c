@@ -36,6 +36,35 @@
 
 #define LED_OFF LED_OFF0; LED_OFF1; LED_OFF2; LED_OFF3; LED_OFF4; LED_OFF5; LED_OFF6; LED_OFF7;
 
+
+//definindo leds do grupo D
+#define LED_OFF0D GPIOD->ODR &= ~(1<<0) //Desliga o led
+#define LED_ON0D GPIOD->ODR |= (1<<0) //Liga o led
+
+#define LED_OFF1D GPIOD->ODR  &= ~(1<<1) //Desliga o led
+#define LED_ON1D GPIOD->ODR |=(1<<1) //Liga o led
+
+#define LED_OFF2D GPIOD->ODR  &= ~(1<<2) //Desliga o led
+#define LED_ON2D GPIOD->ODR |= (1<<2) //Liga o led
+
+#define LED_OFF3D GPIOD->ODR &= ~(1<<3) //Desliga o led
+#define LED_ON3D GPIOD->ODR |= (1<<3) //Liga o led
+
+#define LED_OFF4D GPIOD->ODR &= ~(1<<4) //Desliga o led
+#define LED_ON4D GPIOD->ODR |=  (1<<4) //Liga o led
+
+#define LED_OFF5D GPIOD->ODR &= ~(1<<5) //Desliga o led
+#define LED_ON5D GPIOD->ODR |=  (1<<5) //Liga o led
+
+#define LED_OFF6D GPIOD->ODR &= ~(1<<6) //Desliga o led
+#define LED_ON6D GPIOD->ODR |= (1<<6) //Liga o led
+
+#define LED_OFF7D GPIOD->ODR  &= ~(1<<7)   //Desliga o led
+#define LED_ON7D GPIOD->ODR |= (1<<7)   //Liga o led
+
+#define LED_OFFD LED_OFF0D; LED_OFF1D; LED_OFF2D; LED_OFF3D; LED_OFF4D; LED_OFF5D; LED_OFF6D; LED_OFF7D;
+
+
 #define BUZZER_OFF8 GPIOA->ODR |= (1<<8)   //Desliga o buzzer
 #define BUZZER_ON8 GPIOA->ODR &= ~(1<<8)   //Liga o buzzer
 
@@ -88,6 +117,7 @@ int main(void)
 	Delay_Start();     //Inicia o temporizador interno da placa para ser usado
 
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN; //habilita o clock do GPIOA
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN; //habilita o clock do GPIOD
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOEEN; //habilita o clock do GPIOE
 
     //Leds
@@ -99,6 +129,15 @@ int main(void)
     GPIOA->MODER |= (0b01 << 10);    //configura o pino PA7 como saída (LED D3)
     GPIOA->MODER |= (0b01 << 12);    //configura o pino PA6 como saída (LED D2)
     GPIOA->MODER |= (0b01 << 14);    //configura o pino PA7 como saída (LED D3)
+
+    GPIOD->MODER |= (0b01 << 0);    //configura o pino PA6 como saída (LED D2)
+    GPIOD->MODER |= (0b01 << 2);    //configura o pino PA7 como saída (LED D3)
+    GPIOD->MODER |= (0b01 << 4);    //configura o pino PA6 como saída (LED D2)
+    GPIOD->MODER |= (0b01 << 6);    //configura o pino PA7 como saída (LED D3)
+    GPIOD->MODER |= (0b01 << 8);    //configura o pino PA6 como saída (LED D2)
+    GPIOD->MODER |= (0b01 << 10);    //configura o pino PA7 como saída (LED D3)
+    GPIOD->MODER |= (0b01 << 12);    //configura o pino PA6 como saída (LED D2)
+    GPIOD->MODER |= (0b01 << 14);    //configura o pino PA7 como saída (LED D3)
 
     //Buzzer
     GPIOA->MODER |= (0b01 << 16);    //configura o pino PA8 como saída (BUZZER)
@@ -132,7 +171,7 @@ int main(void)
 	//questao12();
 	//questao13();
 	//questao14();
-	//questao15();
+	questao15();
 	//questao16();
 	//questao17();
 	//questao18();
@@ -140,7 +179,7 @@ int main(void)
 	//questao20();
 	//questao21();
 	//questao22();
-	questao23();
+	//questao23();
 	//questao24();
 	//questao25();
 	//questao26();
@@ -380,7 +419,13 @@ void questao14()
 {
 	while(1){
 		LED_OFF;
-		for(int i=1; i<=9; i++){
+		for(int i=0; i<=9; i++){
+			if(i == 0){
+				GPIOA->ODR |= (126);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
 			if(i == 1){
 				GPIOA->ODR |= (6);
 				Delay_ms(1000);
@@ -441,7 +486,133 @@ void questao14()
 
 void questao15()
 {
-
+	while(1){
+		LED_OFF;
+		for(int i=0; i<=9; i++){
+			if(i == 0){
+				GPIOA->ODR |= (126);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 1){
+				GPIOA->ODR |= (6);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 2){
+				GPIOA->ODR |= (91);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 3){
+				GPIOA->ODR |= (79);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 4){
+				GPIOA->ODR |= (102);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 5){
+				GPIOA->ODR |= (109);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 6){
+				GPIOA->ODR |= (124);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 7){
+				GPIOA->ODR |= (7);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 8){
+				GPIOA->ODR |= (127);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			if(i == 9){
+				GPIOA->ODR |= (103);
+				Delay_ms(1000);
+				LED_OFF;
+				Delay_ms(1000);
+			}
+			for(int j=0; j<=9; j++){
+				if(j == 0){
+					GPIOD->ODR |= (126);
+					Delay_ms(1000);
+					LED_OFFD;
+					Delay_ms(1000);
+				}
+				if(j == 1){
+					GPIOD->ODR |= (6);
+					Delay_ms(1000);
+					LED_OFFD;
+					Delay_ms(1000);
+				}
+				if(j == 2){
+					GPIOD->ODR |= (91);
+					Delay_ms(1000);
+					LED_OFFD;
+					Delay_ms(1000);
+				}
+				if(j == 3){
+					GPIOD->ODR |= (79);
+					Delay_ms(1000);
+					LED_OFFD;
+					Delay_ms(1000);
+				}
+				if(j == 4){
+					GPIOD->ODR |= (102);
+					Delay_ms(1000);
+					LED_OFFD;
+					Delay_ms(1000);
+				}
+				if(j == 5){
+					GPIOD->ODR |= (109);
+					Delay_ms(1000);
+					LED_OFFD;
+					Delay_ms(1000);
+				}
+				if(j == 6){
+					GPIOD->ODR |= (124);
+					Delay_ms(1000);
+					LED_OFFD;
+					Delay_ms(1000);
+				}
+				if(j == 7){
+					GPIOD->ODR |= (7);
+					Delay_ms(1000);
+					LED_OFFD;
+					Delay_ms(1000);
+				}
+				if(j == 8){
+					GPIOD->ODR |= (127);
+					Delay_ms(1000);
+					LED_OFFD;
+					Delay_ms(1000);
+				}
+				if(j == 9){
+					GPIOD->ODR |= (103);
+					Delay_ms(1000);
+					LED_OFFD;
+					Delay_ms(1000);
+				}
+			}
+		}
+	}
 }
 
 void questao16()
@@ -518,10 +689,12 @@ void questao23()
 		if(k0){
 			if(estado == 1){
 				LED_OFF6;
+				Delay_ms(500);
 				estado = 0;
 			}
 			else if(estado == 0){
 				LED_ON6;
+				Delay_ms(500);
 				estado = 1;
 			}
 		}
@@ -558,6 +731,25 @@ void questao24()
 
 void questao25()
 {
+	while(1)
+	{
+		if(k0 && !k1){ //Se k0 pressionado e k1 estiver solto
+			while(k0) //Enquanto k0 estiver pressionado vou vendo se o k1 foi acionado tbm
+			{
+				if(Delay_ms <= 1000){
+					break;
+				}
+				if(k1) //Se k1 pressionado
+				{
+					LED_ON6;
+				}
+				else //Se k1 estiver solto
+				{
+					LED_OFF6;
+				}
+			}
+		}
+	}
 
 }
 
