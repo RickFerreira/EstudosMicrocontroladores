@@ -111,8 +111,6 @@ void questao30(void);
 
 int main(void)
 {
-
-
 	Configure_Clock(); //Configura o clock da placa para sincronizar as funções delay
 	Delay_Start();     //Inicia o temporizador interno da placa para ser usado
 
@@ -170,8 +168,8 @@ int main(void)
 	//questao11();
 	//questao12();
 	//questao13();
-	//questao14();
-	questao15();
+	questao14();
+	//questao15();
 	//questao16();
 	//questao17();
 	//questao18();
@@ -369,7 +367,7 @@ void questao11()
 	while(1){
 		for(int i=0; i<256; i++){
 			GPIOA->ODR |= (i);
-			Delay_ms(1000);
+			Delay_ms(100);
 			LED_OFF;
 		}
 	}
@@ -417,69 +415,14 @@ void questao13()
 
 void questao14()
 {
+	const mask[16] = {63, 6, 91, 79, 102, 109, 125, 7, 127, 111, 119, 124, 57, 94, 121, 113};
+
 	while(1){
 		LED_OFF;
-		for(int i=0; i<=9; i++){
-			if(i == 0){
-				GPIOA->ODR |= (126);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 1){
-				GPIOA->ODR |= (6);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 2){
-				GPIOA->ODR |= (91);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 3){
-				GPIOA->ODR |= (79);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 4){
-				GPIOA->ODR |= (102);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 5){
-				GPIOA->ODR |= (109);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 6){
-				GPIOA->ODR |= (124);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 7){
-				GPIOA->ODR |= (7);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 8){
-				GPIOA->ODR |= (127);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 9){
-				GPIOA->ODR |= (103);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
+		for(int i=0; i<=15; i++){
+			GPIOA->ODR |= (mask[i]);
+			Delay_ms(1000);
+			LED_OFF;
 		}
 	}
 }
