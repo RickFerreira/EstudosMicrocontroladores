@@ -74,6 +74,7 @@
 #define k1 !(GPIOE->IDR & (1<<3)) //testando o botão K1 á pressionado fazendo um AND com o valor 1 na posição 3 (botão pressionado)
 
 #define MAX 8
+const mask[16] = {63, 6, 91, 79, 102, 109, 125, 7, 127, 111, 119, 124, 57, 94, 121, 113};
 
 
 void questao1(void);
@@ -168,7 +169,7 @@ int main(void)
 	//questao11();
 	//questao12();
 	//questao13();
-	questao14();
+	//questao14();
 	//questao15();
 	//questao16();
 	//questao17();
@@ -179,7 +180,7 @@ int main(void)
 	//questao22();
 	//questao23();
 	//questao24();
-	//questao25();
+	questao25();
 	//questao26();
 	//questao27();
 	//questao28();
@@ -415,12 +416,15 @@ void questao13()
 
 void questao14()
 {
-	const mask[16] = {63, 6, 91, 79, 102, 109, 125, 7, 127, 111, 119, 124, 57, 94, 121, 113};
-
 	while(1){
 		LED_OFF;
-		for(int i=0; i<=15; i++){
+		for(int i=0; i<=14; i++){
 			GPIOA->ODR |= (mask[i]);
+			Delay_ms(1000);
+			LED_OFF;
+		}
+		for(int i=0; i<=15; i++){
+			GPIOA->ODR |= (mask[15-i]);
 			Delay_ms(1000);
 			LED_OFF;
 		}
@@ -431,128 +435,24 @@ void questao15()
 {
 	while(1){
 		LED_OFF;
-		for(int i=0; i<=9; i++){
-			if(i == 0){
-				GPIOA->ODR |= (126);
+		for(int i=0; i<=14; i++){
+			GPIOA->ODR |= (mask[i]);
+			Delay_ms(1000);
+			LED_OFF;
+			for(int j=0; j<=14; j++){
+				GPIOD->ODR |= (mask[i]);
 				Delay_ms(1000);
 				LED_OFF;
-				Delay_ms(1000);
 			}
-			if(i == 1){
-				GPIOA->ODR |= (6);
+		}
+		for(int i=0; i<=15; i++){
+			GPIOA->ODR |= (mask[15-i]);
+			Delay_ms(1000);
+			LED_OFF;
+			for(int j=0; j<=15; j++){
+				GPIOD->ODR |= (mask[15-i]);
 				Delay_ms(1000);
 				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 2){
-				GPIOA->ODR |= (91);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 3){
-				GPIOA->ODR |= (79);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 4){
-				GPIOA->ODR |= (102);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 5){
-				GPIOA->ODR |= (109);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 6){
-				GPIOA->ODR |= (124);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 7){
-				GPIOA->ODR |= (7);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 8){
-				GPIOA->ODR |= (127);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			if(i == 9){
-				GPIOA->ODR |= (103);
-				Delay_ms(1000);
-				LED_OFF;
-				Delay_ms(1000);
-			}
-			for(int j=0; j<=9; j++){
-				if(j == 0){
-					GPIOD->ODR |= (126);
-					Delay_ms(1000);
-					LED_OFFD;
-					Delay_ms(1000);
-				}
-				if(j == 1){
-					GPIOD->ODR |= (6);
-					Delay_ms(1000);
-					LED_OFFD;
-					Delay_ms(1000);
-				}
-				if(j == 2){
-					GPIOD->ODR |= (91);
-					Delay_ms(1000);
-					LED_OFFD;
-					Delay_ms(1000);
-				}
-				if(j == 3){
-					GPIOD->ODR |= (79);
-					Delay_ms(1000);
-					LED_OFFD;
-					Delay_ms(1000);
-				}
-				if(j == 4){
-					GPIOD->ODR |= (102);
-					Delay_ms(1000);
-					LED_OFFD;
-					Delay_ms(1000);
-				}
-				if(j == 5){
-					GPIOD->ODR |= (109);
-					Delay_ms(1000);
-					LED_OFFD;
-					Delay_ms(1000);
-				}
-				if(j == 6){
-					GPIOD->ODR |= (124);
-					Delay_ms(1000);
-					LED_OFFD;
-					Delay_ms(1000);
-				}
-				if(j == 7){
-					GPIOD->ODR |= (7);
-					Delay_ms(1000);
-					LED_OFFD;
-					Delay_ms(1000);
-				}
-				if(j == 8){
-					GPIOD->ODR |= (127);
-					Delay_ms(1000);
-					LED_OFFD;
-					Delay_ms(1000);
-				}
-				if(j == 9){
-					GPIOD->ODR |= (103);
-					Delay_ms(1000);
-					LED_OFFD;
-					Delay_ms(1000);
-				}
 			}
 		}
 	}
