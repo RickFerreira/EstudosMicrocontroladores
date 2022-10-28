@@ -417,7 +417,7 @@ void questao15()
 	while(1){
 		for(int j=0; j<=15; j++){
 			for(int k=0; k<=15; k++){
-				for(int i=0; i<50; i++){
+				for(int i=0; i<20; i++){
 					TRANSISTOR_1_ON;
 					TRANSISTOR_0_OFF;
 
@@ -440,7 +440,7 @@ void questao15()
 
 		for(int j=0; j<=15; j++){
 			for(int k=0; k<=15; k++){
-				for(int i=0; i<50; i++){
+				for(int i=0; i<20; i++){
 					TRANSISTOR_1_ON;
 					TRANSISTOR_0_OFF;
 
