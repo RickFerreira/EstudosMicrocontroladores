@@ -37,32 +37,12 @@
 #define LED_OFF LED_OFF0; LED_OFF1; LED_OFF2; LED_OFF3; LED_OFF4; LED_OFF5; LED_OFF6; LED_OFF7;
 
 
-//definindo leds do grupo D
-#define LED_OFF0D GPIOD->ODR &= ~(1<<0) //Desliga o led
-#define LED_ON0D GPIOD->ODR |= (1<<0) //Liga o led
+//definindo transistores do grupo D
+#define TRANSISTOR_0_OFF GPIOD->ODR &= ~(1<<0) //Desliga o transistor
+#define TRANSISTOR_0_ON GPIOD->ODR |= (1<<0) //Liga o transistor
 
-#define LED_OFF1D GPIOD->ODR  &= ~(1<<1) //Desliga o led
-#define LED_ON1D GPIOD->ODR |=(1<<1) //Liga o led
-
-#define LED_OFF2D GPIOD->ODR  &= ~(1<<2) //Desliga o led
-#define LED_ON2D GPIOD->ODR |= (1<<2) //Liga o led
-
-#define LED_OFF3D GPIOD->ODR &= ~(1<<3) //Desliga o led
-#define LED_ON3D GPIOD->ODR |= (1<<3) //Liga o led
-
-#define LED_OFF4D GPIOD->ODR &= ~(1<<4) //Desliga o led
-#define LED_ON4D GPIOD->ODR |=  (1<<4) //Liga o led
-
-#define LED_OFF5D GPIOD->ODR &= ~(1<<5) //Desliga o led
-#define LED_ON5D GPIOD->ODR |=  (1<<5) //Liga o led
-
-#define LED_OFF6D GPIOD->ODR &= ~(1<<6) //Desliga o led
-#define LED_ON6D GPIOD->ODR |= (1<<6) //Liga o led
-
-#define LED_OFF7D GPIOD->ODR  &= ~(1<<7)   //Desliga o led
-#define LED_ON7D GPIOD->ODR |= (1<<7)   //Liga o led
-
-#define LED_OFFD LED_OFF0D; LED_OFF1D; LED_OFF2D; LED_OFF3D; LED_OFF4D; LED_OFF5D; LED_OFF6D; LED_OFF7D;
+#define TRANSISTOR_1_OFF GPIOD->ODR  &= ~(1<<1) //Desliga o transistor
+#define TRANSISTOR_1_ON  GPIOD->ODR |=(1<<1) //Liga o transistor
 
 
 #define BUZZER_OFF8 GPIOA->ODR |= (1<<8)   //Desliga o buzzer
@@ -170,7 +150,7 @@ int main(void)
 	//questao12();
 	//questao13();
 	//questao14();
-	//questao15();
+	questao15();
 	//questao16();
 	//questao17();
 	//questao18();
@@ -180,7 +160,7 @@ int main(void)
 	//questao22();
 	//questao23();
 	//questao24();
-	questao25();
+	//questao25();
 	//questao26();
 	//questao27();
 	//questao28();
@@ -433,26 +413,51 @@ void questao14()
 
 void questao15()
 {
+	LED_OFF;
 	while(1){
-		LED_OFF;
-		for(int i=0; i<=14; i++){
-			GPIOA->ODR |= (mask[i]);
-			Delay_ms(1000);
-			LED_OFF;
-			for(int j=0; j<=14; j++){
-				GPIOD->ODR |= (mask[i]);
-				Delay_ms(1000);
-				LED_OFF;
+		for(int j=0; j<=15; j++){
+			for(int k=0; k<=15; k++){
+				for(int i=0; i<50; i++){
+					TRANSISTOR_1_ON;
+					TRANSISTOR_0_OFF;
+
+					if((TRANSISTOR_1_ON) && (TRANSISTOR_0_OFF)){
+						GPIOA->ODR |= (mask[k]);
+						Delay_ms(10);
+						LED_OFF;
+						TRANSISTOR_1_OFF;
+						TRANSISTOR_0_ON;
+					}
+
+					if((TRANSISTOR_0_ON) && (TRANSISTOR_1_OFF)){
+						GPIOA->ODR |= (mask[j]);
+						Delay_ms(10);
+						LED_OFF;
+					}
+				}
 			}
 		}
-		for(int i=0; i<=15; i++){
-			GPIOA->ODR |= (mask[15-i]);
-			Delay_ms(1000);
-			LED_OFF;
-			for(int j=0; j<=15; j++){
-				GPIOD->ODR |= (mask[15-i]);
-				Delay_ms(1000);
-				LED_OFF;
+
+		for(int j=0; j<=15; j++){
+			for(int k=0; k<=15; k++){
+				for(int i=0; i<50; i++){
+					TRANSISTOR_1_ON;
+					TRANSISTOR_0_OFF;
+
+					if((TRANSISTOR_1_ON) && (TRANSISTOR_0_OFF)){
+						GPIOA->ODR |= (mask[15-k]);
+						Delay_ms(10);
+						LED_OFF;
+						TRANSISTOR_1_OFF;
+						TRANSISTOR_0_ON;
+					}
+
+					if((TRANSISTOR_0_ON) && (TRANSISTOR_1_OFF)){
+						GPIOA->ODR |= (mask[15-j]);
+						Delay_ms(10);
+						LED_OFF;
+					}
+				}
 			}
 		}
 	}
