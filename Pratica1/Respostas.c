@@ -8,7 +8,6 @@
 #include "stm32f4xx.h"
 #include "Utility.h" //Incluindo biblioteca para usar a funções para o tempo
 
-
 //definindo leds
 #define LED_OFF0 GPIOA->ODR &= ~(1<<0) //Desliga o led
 #define LED_ON0 GPIOA->ODR |= (1<<0) //Liga o led
