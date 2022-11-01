@@ -36,7 +36,6 @@
 
 #define LED_OFF LED_OFF0; LED_OFF1; LED_OFF2; LED_OFF3; LED_OFF4; LED_OFF5; LED_OFF6; LED_OFF7;
 
-
 //definindo transistores do grupo D
 #define TRANSISTOR_0_OFF GPIOD->ODR &= ~(1<<0) //Desliga o transistor
 #define TRANSISTOR_0_ON GPIOD->ODR |= (1<<0) //Liga o transistor
