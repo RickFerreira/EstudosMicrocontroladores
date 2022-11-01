@@ -50,6 +50,7 @@
 #define k0 !(GPIOE->IDR & (1<<4)) //testando se o botão K0 tá pressionado fazendo um AND com o valor 1 na posição 4 (botão pressionado)
 #define kup (GPIOA->IDR & (1)) //testando se o botão K_UP tá pressionado fazendo um AND com o valor 1 na posição 4 (botão pressionado)
 #define k1 !(GPIOE->IDR & (1<<3)) //testando o botão K1 á pressionado fazendo um AND com o valor 1 na posição 3 (botão pressionado)
+#define k2 !(GPIOE->IDR & (1<<5)) //testando o botão K2 á pressionado fazendo um AND com o valor 1 na posição 5 (botão pressionado)
 
 #define MAX 8
 const mask[16] = {63, 6, 91, 79, 102, 109, 125, 7, 127, 111, 119, 124, 57, 94, 121, 113};
@@ -129,6 +130,9 @@ int main(void)
     GPIOA->MODER &= ~(0b00 << 0);    //configurando o pino PA0 como entrada (botão k_up)
     GPIOA->PUPDR |= (0b10 << 0);     //liga o resistor de pull-down no pino PA0 (pra garantir nível alto quando a chave estiver solta)
 
+    GPIOE->MODER &= ~(0b11 << 10);    //configurando o pino PE4 como entrada (botão k2)
+    GPIOE->PUPDR |= (0b01 << 10);     //liga o resistor de pull-up no pino PE4 (pra garantir nível alto quando a chave estiver solta)
+
     //Todos os leds começam desligados
     LED_OFF;
 
@@ -148,7 +152,7 @@ int main(void)
 	//questao12();
 	//questao13();
 	//questao14();
-	questao15();
+	//questao15();
 	//questao16();
 	//questao17();
 	//questao18();
@@ -160,7 +164,7 @@ int main(void)
 	//questao24();
 	//questao25();
 	//questao26();
-	//questao27();
+	questao27();
 	//questao28();
 	//questao29();
 	//questao30();
@@ -468,7 +472,21 @@ void questao16()
 
 void questao17()
 {
-
+    while(1)
+    {
+    	for(int i=600; i<=2400; i+=10){
+    		LED_ON0;
+			Delay_us(i);
+			LED_OFF0;
+			Delay_us(20000);
+    	}
+    	for(int i=2400; i>=600; i-=10){
+			LED_ON0;
+			Delay_us(i);
+			LED_OFF0;
+			Delay_us(20000);
+		}
+    }
 }
 
 void questao18()
@@ -601,12 +619,58 @@ void questao25()
 
 void questao26()
 {
-
+	int cont = 600;
+	LED_ON0;
+	Delay_us(cont);
+	LED_OFF0;
+	Delay_us(20000);
+    while(1)
+    {
+    	if(k0){
+    		if(cont == 600){
+				LED_ON0;
+				Delay_us(cont);
+				LED_OFF0;
+				Delay_us(20000);
+    		}
+    		else{
+        		cont -= 100;
+    			LED_ON0;
+    			Delay_us(cont);
+    			LED_OFF0;
+    			Delay_us(20000);
+    		}
+    	}
+    	if(k1){
+    		cont += 100;
+			LED_ON0;
+			Delay_us(cont);
+			LED_OFF0;
+			Delay_us(20000);
+    	}
+    }
 }
 
 void questao27()
 {
-
+	while(1){
+		LED_OFF;
+		if(k0){
+			GPIOA->ODR |= (mask[1]);
+			Delay_ms(100);
+			LED_OFF;
+		}
+		if(k1){
+			GPIOA->ODR |= (mask[2]);
+			Delay_ms(100);
+			LED_OFF;
+		}
+		if(k2){
+			GPIOA->ODR |= (mask[3]);
+			Delay_ms(100);
+			LED_OFF;
+		}
+	}
 }
 
 void questao28()
