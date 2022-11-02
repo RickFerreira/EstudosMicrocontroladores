@@ -2,11 +2,12 @@
  * Projeto: Todos os projetos da primeira prática
  * Placa: STM32F4VEx
  * Descrição: Programação do GPIO
- * Autor: Patricia Santos e Richard Ferreira
+ * Autores: Patricia Santos e Richard Ferreira
 */
 
 #include "stm32f4xx.h"
 #include "Utility.h" //Incluindo biblioteca para usar a funções para o tempo
+#include <stdlib.h>
 
 //definindo leds
 #define LED_OFF0 GPIOA->ODR &= ~(1<<0) //Desliga o led
@@ -43,8 +44,8 @@
 #define TRANSISTOR_1_ON  GPIOD->ODR |=(1<<1) //Liga o transistor
 
 
-#define BUZZER_OFF8 GPIOA->ODR |= (1<<8)   //Desliga o buzzer
-#define BUZZER_ON8 GPIOA->ODR &= ~(1<<8)   //Liga o buzzer
+#define BUZZER_ON8 GPIOA->ODR |= (1<<8)   //Desliga o buzzer
+#define BUZZER_OFF8 GPIOA->ODR &= ~(1<<8)   //Liga o buzzer
 
 //definindo os botões
 #define k0 !(GPIOE->IDR & (1<<4)) //testando se o botão K0 tá pressionado fazendo um AND com o valor 1 na posição 4 (botão pressionado)
@@ -164,10 +165,10 @@ int main(void)
 	//questao24();
 	//questao25();
 	//questao26();
-	questao27();
+	//questao27();
 	//questao28();
 	//questao29();
-	//questao30();
+	questao30();
 
 }
 
@@ -685,5 +686,120 @@ void questao29()
 
 void questao30()
 {
+	int nivel = 1;
+	int inicio = 0;
+	int acertos = 0;
+	int genius[6];
+	int respostas[6];
+	while(1){
+		//INICIA O JOGO
+    	for(int i=0; i<=3; i++)
+    	{
+    		LED_ON0;
+    		LED_ON1;
+    		LED_ON2;
+        	BUZZER_ON8;
+        	Delay_ms(50);
+        	BUZZER_OFF8;
+        	LED_OFF;
+        	Delay_ms(50);
+    	}
+    	BUZZER_OFF8;
+    	Delay_ms(1500);
+
+    	//Criando sequência aleatoria e colocando na lista
+    	for(int i=inicio; i<6; i++){
+    		genius[i] = rand()%3;
+    	}
+    	//Mostrando sequência
+    	for(int j=0; j<nivel; j++){
+    		if(genius[j] == 0){
+    			LED_ON0;
+    			Delay_ms(100);
+    			LED_OFF;
+    			Delay_ms(1000);
+    		}
+    		if(genius[j] == 1){
+    			LED_ON1;
+    			Delay_ms(100);
+    			LED_OFF;
+    			Delay_ms(1000);
+    		}
+    		if(genius[j] == 2){
+    			LED_ON2;
+    			Delay_ms(100);
+    			LED_OFF;
+    			Delay_ms(1000);
+    		}
+    	}
+    	//Receber as repostas
+    	for(int k=0; k<nivel; k++){
+    		LED_ON0;
+    		LED_ON1;
+    		LED_ON2;
+        	BUZZER_ON8;
+        	Delay_ms(100); //Chama a função passando como parametros 100 milissegundos
+        	BUZZER_OFF8;
+        	LED_OFF;
+        	Delay_ms(1000); //Chama a função passando como parametros 100 milissegundos
+    		if(k0){
+    			LED_ON0;
+    			Delay_ms(200);
+    			LED_OFF;
+    			Delay_ms(1800);
+    			respostas[k] = 0;
+    		}
+    		if(k1){
+    			LED_ON1;
+    			Delay_ms(200);
+    			LED_OFF;
+    			Delay_ms(1800);
+    			respostas[k] = 1;
+    		}
+    		if(k2){
+    			LED_ON2;
+    			Delay_ms(200);
+    			LED_OFF;
+    			Delay_ms(1800);
+    			respostas[k] = 2;
+    		}
+    	}
+		//Conferir respostas
+    	for(int l=0; l<nivel; l++){
+    		if(genius[l] == respostas[l]){
+    			acertos++;
+    		}
+    	}
+    	//Verificando o nível
+    	if(acertos == nivel){
+    		if(nivel == 6){
+    			for(int m=0; m<5; m++){
+            		LED_ON0;
+        			BUZZER_ON8;
+        			Delay_ms(300); //Chama a função passando como parametros 100 milissegundos
+        			BUZZER_OFF8;
+        			LED_OFF;
+        			Delay_ms(300);
+    			}
+    			nivel = 1;
+				inicio = 0;
+    		}
+    		else{
+    			nivel++;
+    			inicio++;
+    		}
+    	}
+    	else{
+ 			LED_ON1;
+			BUZZER_ON8;
+			Delay_ms(5000); //Chama a função passando como parametros 100 milissegundos
+			BUZZER_OFF8;
+			LED_OFF;
+			Delay_ms(2000);
+			nivel = 1;
+			inicio = 0;
+    	}
+    	acertos = 0;
+    }
 
 }
