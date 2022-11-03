@@ -43,9 +43,14 @@
 #define TRANSISTOR_1_OFF GPIOD->ODR  &= ~(1<<1) //Desliga o transistor
 #define TRANSISTOR_1_ON  GPIOD->ODR |=(1<<1) //Liga o transistor
 
-
 #define BUZZER_ON8 GPIOA->ODR |= (1<<8)   //Desliga o buzzer
 #define BUZZER_OFF8 GPIOA->ODR &= ~(1<<8)   //Liga o buzzer
+
+#define RELE_ON2 GPIOD->ODR |= (1<<2)
+#define RELE_OFF2 GPIOD->ODR &= ~(1<<2)
+
+#define RELE_OFF1 GPIOD->ODR |= (1<<1)
+#define RELE_ON1 GPIOD->ODR &= ~(1<<1)
 
 //definindo os botões
 #define k0 !(GPIOE->IDR & (1<<4)) //testando se o botão K0 tá pressionado fazendo um AND com o valor 1 na posição 4 (botão pressionado)
@@ -88,8 +93,6 @@ void questao28(void);
 void questao29(void);
 void questao30(void);
 
-
-
 int main(void)
 {
 	Configure_Clock(); //Configura o clock da placa para sincronizar as funções delay
@@ -109,17 +112,14 @@ int main(void)
     GPIOA->MODER |= (0b01 << 12);    //configura o pino PA6 como saída (LED D2)
     GPIOA->MODER |= (0b01 << 14);    //configura o pino PA7 como saída (LED D3)
 
-    GPIOD->MODER |= (0b01 << 0);    //configura o pino PA6 como saída (LED D2)
-    GPIOD->MODER |= (0b01 << 2);    //configura o pino PA7 como saída (LED D3)
     GPIOD->MODER |= (0b01 << 4);    //configura o pino PA6 como saída (LED D2)
-    GPIOD->MODER |= (0b01 << 6);    //configura o pino PA7 como saída (LED D3)
-    GPIOD->MODER |= (0b01 << 8);    //configura o pino PA6 como saída (LED D2)
-    GPIOD->MODER |= (0b01 << 10);    //configura o pino PA7 como saída (LED D3)
-    GPIOD->MODER |= (0b01 << 12);    //configura o pino PA6 como saída (LED D2)
-    GPIOD->MODER |= (0b01 << 14);    //configura o pino PA7 como saída (LED D3)
+    GPIOD->MODER |= (0b01 << 2);    //configura o pino PA7 como saída (LED D3)
 
     //Buzzer
     GPIOA->MODER |= (0b01 << 16);    //configura o pino PA8 como saída (BUZZER)
+
+    //Relé
+    GPIOE->MODER |= (0b01 << 4);    //configura o pino PE2 como saída (Relé)
 
     //Botões
     GPIOE->MODER &= ~(0b11 << 6);    //configurando o pino PE3 como entrada (botão k1)
@@ -157,7 +157,7 @@ int main(void)
 	//questao16();
 	//questao17();
 	//questao18();
-	//questao19();
+	questao19();
 	//questao20();
 	//questao21();
 	//questao22();
@@ -168,7 +168,7 @@ int main(void)
 	//questao27();
 	//questao28();
 	//questao29();
-	questao30();
+	//questao30();
 
 }
 
@@ -497,7 +497,14 @@ void questao18()
 
 void questao19()
 {
-
+	RELE_OFF2;
+	Delay_ms(1000);
+	while(1){
+		while(k1){
+			RELE_ON2;
+		}
+		RELE_OFF2;
+	}
 }
 
 void questao20()
