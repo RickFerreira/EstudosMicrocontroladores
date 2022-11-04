@@ -43,9 +43,14 @@
 #define TRANSISTOR_1_OFF GPIOD->ODR  &= ~(1<<1) //Desliga o transistor
 #define TRANSISTOR_1_ON  GPIOD->ODR |=(1<<1) //Liga o transistor
 
-#define BUZZER_ON8 GPIOA->ODR |= (1<<8)   //Desliga o buzzer
+//defininco buzzers
+#define BUZZER_ON8 GPIOA->ODR |= (1<<8)     //Desliga o buzzer
 #define BUZZER_OFF8 GPIOA->ODR &= ~(1<<8)   //Liga o buzzer
 
+#define BUZZER_ON2 GPIOE->ODR  |= (1<<2)  //Desliga o buzzer
+#define BUZZER_OFF2 GPIOE->ODR &= ~(1<<2)   //Liga o buzzer
+
+//definindo reles
 #define RELE_ON2 GPIOD->ODR |= (1<<2)
 #define RELE_OFF2 GPIOD->ODR &= ~(1<<2)
 
@@ -57,6 +62,10 @@
 #define kup (GPIOA->IDR & (1)) //testando se o botão K_UP tá pressionado fazendo um AND com o valor 1 na posição 4 (botão pressionado)
 #define k1 !(GPIOE->IDR & (1<<3)) //testando o botão K1 á pressionado fazendo um AND com o valor 1 na posição 3 (botão pressionado)
 #define k2 !(GPIOE->IDR & (1<<5)) //testando o botão K2 á pressionado fazendo um AND com o valor 1 na posição 5 (botão pressionado)
+
+//definindo sensor distancia
+#define DISTANCIA10 !(GPIOD->IDR & (1<<10))
+#define DISTANCIA11 !(GPIOD->IDR & (1<<11)) 
 
 #define MAX 8
 const mask[16] = {63, 6, 91, 79, 102, 109, 125, 7, 127, 111, 119, 124, 57, 94, 121, 113};
@@ -92,6 +101,7 @@ void questao27(void);
 void questao28(void);
 void questao29(void);
 void questao30(void);
+void carrinho(void);
 
 int main(void)
 {
@@ -112,14 +122,13 @@ int main(void)
     GPIOA->MODER |= (0b01 << 12);    //configura o pino PA6 como saída (LED D2)
     GPIOA->MODER |= (0b01 << 14);    //configura o pino PA7 como saída (LED D3)
 
-    GPIOD->MODER |= (0b01 << 4);    //configura o pino PA6 como saída (LED D2)
-    GPIOD->MODER |= (0b01 << 2);    //configura o pino PA7 como saída (LED D3)
-
     //Buzzer
     GPIOA->MODER |= (0b01 << 16);    //configura o pino PA8 como saída (BUZZER)
+    GPIOE->MODER |= (0b01 << 4);    //configura o pino PE2 como saída (BUZZER)
 
     //Relé
-    GPIOE->MODER |= (0b01 << 4);    //configura o pino PE2 como saída (Relé)
+    GPIOD->MODER |= (0b01 << 4);    //configura o pino PD2 como saída (Relé)
+    GPIOD->MODER |= (0b01 << 2);    //configura o pino PD1 como saída (Relé)
 
     //Botões
     GPIOE->MODER &= ~(0b11 << 6);    //configurando o pino PE3 como entrada (botão k1)
@@ -133,9 +142,14 @@ int main(void)
 
     GPIOE->MODER &= ~(0b11 << 10);    //configurando o pino PE4 como entrada (botão k2)
     GPIOE->PUPDR |= (0b01 << 10);     //liga o resistor de pull-up no pino PE4 (pra garantir nível alto quando a chave estiver solta)
+    
+    //Sensor ultrasonico
+    GPIOD->MODER &= ~(0b11 << 20);    //configurando o pino PD10 como entrada
+    GPIOD->MODER &= ~(0b11 << 22);    //configurando o pino PD11 como entrada
 
     //Todos os leds começam desligados
     LED_OFF;
+    RELE_OFF2;
 
     //Chamando as funções de cada questão
 
@@ -157,7 +171,7 @@ int main(void)
 	//questao16();
 	//questao17();
 	//questao18();
-	questao19();
+	//questao19();
 	//questao20();
 	//questao21();
 	//questao22();
@@ -169,6 +183,7 @@ int main(void)
 	//questao28();
 	//questao29();
 	//questao30();
+    carrinho();
 
 }
 
@@ -809,4 +824,19 @@ void questao30()
     	acertos = 0;
     }
 
+}
+
+void carrinho()
+{
+	RELE_OFF2;
+	LED_OFF;
+	Delay_ms(1000);
+	while(1){
+		while(k1){
+			BUZZER_ON2;
+			RELE_ON2;
+		}
+		BUZZER_OFF2;
+		RELE_OFF2;
+	}
 }
