@@ -70,7 +70,6 @@
 #define MAX 8
 const mask[16] = {63, 6, 91, 79, 102, 109, 125, 7, 127, 111, 119, 124, 57, 94, 121, 113};
 
-
 void questao1(void);
 void questao2(void);
 void questao3(void);
