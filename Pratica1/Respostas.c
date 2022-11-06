@@ -34,6 +34,7 @@
 #define LED_OFF7 GPIOA->ODR  &= ~(1<<7)   //Desliga o led
 #define LED_ON7 GPIOA->ODR |= (1<<7)   //Liga o led
 
+//Desligar todos os LEDs
 #define LED_OFF LED_OFF0; LED_OFF1; LED_OFF2; LED_OFF3; LED_OFF4; LED_OFF5; LED_OFF6; LED_OFF7;
 
 //definindo transistores do grupo D
