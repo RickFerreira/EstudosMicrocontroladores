@@ -840,4 +840,3 @@ void carrinho()
 		RELE_OFF2;
 	}
 }
-
