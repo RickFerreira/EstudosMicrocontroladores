@@ -5,6 +5,7 @@
  * Autores: Patricia Santos e Richard Ferreira
 */
 
+
 #include "stm32f4xx.h"
 #include "Utility.h" //Incluindo biblioteca para usar a funções para o tempo
 #include <stdlib.h>
