@@ -17,7 +17,6 @@
 #define PINOS_A_OFF PINO_4_OFF;
 
 //Criando lista senoide
-const mask[200]={1861,2357,1861,1365,1861};
 const uint16_t samples[200]={1861, 1876, 1892, 1907, 1923, 1938, 1953, 1969, 1984, 1999,
 							 2014, 2029, 2043, 2057, 2072, 2086, 2099, 2113, 2126, 2139,
 							 2152, 2165, 2177, 2189, 2200, 2211, 2222, 2233, 2243, 2252,
@@ -38,19 +37,7 @@ const uint16_t samples[200]={1861, 1876, 1892, 1907, 1923, 1938, 1953, 1969, 198
 							 1459, 1469, 1478, 1488, 1499, 1510, 1521, 1532, 1544, 1556,
 							 1569, 1582, 1595, 1608, 1622, 1635, 1649, 1664, 1678, 1692,
 							 1707, 1722, 1737, 1752, 1768, 1783, 1798, 1814, 1829, 1845,
-}
-
-const uint16_t samples[100]={
-		2048, 2176, 2304, 2431, 2557, 2680, 2801, 2919, 3034, 3145,
-		3251, 3353, 3449, 3540, 3625, 3704, 3776, 3842, 3900, 3951,
-		3995, 4031, 4059, 4079, 4091, 4095, 4091, 4079, 4059, 4031,
-		3995, 3951, 3900, 3842, 3776, 3704, 3625, 3540, 3449, 3353,
-		3251, 3145, 3034, 2919, 2801, 2680, 2557, 2431, 2304, 2176,
-		2048, 1919, 1791, 1664, 1538, 1415, 1294, 1176, 1061, 950,
-		844, 742, 646, 555, 470, 391, 319, 253, 195, 144,
-		100, 64, 36, 16, 4, 0, 4, 16, 36, 64,
-		100, 144, 195, 253, 319, 391, 470, 555, 646, 742,
-		844, 950, 1061, 1176, 1294, 1415, 1538, 1664, 1791, 1919};
+};
 
 //Chamando as funções
 void questao1(void);
@@ -62,24 +49,37 @@ void questao5(void);
 int main(void)
 {
 	Configure_Clock(); //Configura o clock da placa para sincronizar as funções delay
+	USART1_Init();     //inicializa a USART1
 	Delay_Start();     //Inicia o temporizador interno da placa para ser usado
 
 	//Habilitando os clocks
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN; //habilita o clock do GPIOA
 	RCC->APB1ENR |= RCC_APB1ENR_DACEN;	 //habilita o clock da interface digital do DAC
+	RCC->APB2ENR |= 1 << 8;              //liga o clock da interface digital do ADC1
 
     //Inicia pino em modo analogico
 	GPIOA->MODER |= 0b11 << 8;				//inicialização o pino PA4 no modo analógico
-	GPIOA->MODER |= 0b11 << 10;				//inicialização o pino PA4 no modo analógico
+	GPIOA->MODER |= 0b11 << 10;				//inicialização o pino PA5 no modo analógico
 
+    GPIOA->MODER |= (0b01 << 2);    //configura o pino PA1 como saída (Servo motor)
+
+	//configuração DA
 	DAC->CR |= DAC_CR_BOFF1;	//desabilita o buffer analógico do DAC1
 	DAC->CR |= DAC_CR_EN1;		//habilita o canal 1 do DAC
 
+	//configuração AD
+	ADC->CCR |= 0b01 << 16; 	//prescaler /4
+	ADC1->SQR1 &= ~(0xF << 20); //conversão de apenas um canal
+	ADC1->SQR3 |= 16; 	 	    //seleção do canal a ser convertido (IN_16)
+	ADC1->SMPR1 |= (7 << 18);   //tempo de amostragem igual a 480 ciclos de ADCCLK
+	ADC->CCR |= (1 << 23);	    //liga o sensor de temperatura
+	ADC1->CR2 |= 1; 			//liga o conversor AD
+
     //Chamando as funções de cada questão
 	//questao1();
-	questao2();
+	//questao2();
 	//questao3();
-	//questao4();
+	questao4();
 	//questao5();
 }
 
@@ -104,10 +104,10 @@ void questao2()
 {
     while(1)
     {
-	    	for(uint8_t contador=0; contador<200; ++contador)
+	    for(uint8_t contador=0; contador<200; ++contador)
 		{
 			DAC->DHR12R1 = samples[contador];	//escreve no DAC1
-			Delay_us(100);				//aguarda para a próxima amostra
+			Delay_us(25);				        //aguarda para a próxima amostra
 		}
     }
 }
@@ -130,9 +130,37 @@ void questao4()
 
 void questao5()
 {
+	uint32_t *p = (uint32_t *) 0x1FFF7A2C; //cria ponteiro para uma posição de memória
+	uint32_t Word = p[0]; //lê o conteúdo da memória
+	uint16_t TS_CAL1 = (Word & 0x0000FFFF); //lê o valor de TS_CAL1
+	uint16_t TS_CAL2 = (Word & 0xFFFF0000) >> 16; //lê o valor de TS_CAL2
+
     while(1)
     {
+    	ADC1->CR2 |= 1 << 30; //inicia a conversão
+    	while(!(ADC1->SR & 0x02)); //aguarda o fim da conversão
+    	//calcula a temperatura
+    	uint8_t temperatura = ((80*(int)(ADC1->DR - TS_CAL1))/(TS_CAL2-TS_CAL1))+30;
+    	float final = ((temperatura-35)*0.013)+600;
 
+    	if(temperatura<=35){
+    		GPIOA->ODR |= (1<<1);
+    		Delay_us(600);
+    		GPIOA->ODR &= ~(1<<1);
+    		Delay_us(20000);
+    	}
+    	else if(temperatura>=60){
+    		GPIOA->ODR |= (1<<1);
+			Delay_us(2400);
+			GPIOA->ODR &= ~(1<<1);
+			Delay_us(20000);
+    	}
+    	else{
+        	GPIOA->ODR |= (1<<1);
+    		Delay_us(final);
+    		GPIOA->ODR &= ~(1<<1);
+    		Delay_us(20000);
+    	}
+    	Delay_ms(100); //aguarda 100ms para fazer a nova leitura
     }
 }
-
