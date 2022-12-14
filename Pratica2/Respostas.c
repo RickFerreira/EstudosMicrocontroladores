@@ -141,32 +141,32 @@ void questao5()
 	uint16_t TS_CAL1 = (Word & 0x0000FFFF); //lê o valor de TS_CAL1
 	uint16_t TS_CAL2 = (Word & 0xFFFF0000) >> 16; //lê o valor de TS_CAL2
 
-    while(1)
-    {
-    	ADC1->CR2 |= 1 << 30; //inicia a conversão
-    	while(!(ADC1->SR & 0x02)); //aguarda o fim da conversão
-    	//calcula a temperatura
-    	uint8_t temperatura = ((80*(int)(ADC1->DR - TS_CAL1))/(TS_CAL2-TS_CAL1))+30;
-    	float final = ((temperatura-35)*0.013)+600;
+	while(1)
+	{
+		ADC1->CR2 |= 1 << 30; //inicia a conversão
+		while(!(ADC1->SR & 0x02)); //aguarda o fim da conversão
+		//calcula a temperatura
+		uint8_t temperatura = ((80*(int)(ADC1->DR - TS_CAL1))/(TS_CAL2-TS_CAL1))+30;
+		float final = ((temperatura-35)*0.013)+600;
 
-    	if(temperatura<=35){
-    		GPIOA->ODR |= (1<<1);
-    		Delay_us(600);
-    		GPIOA->ODR &= ~(1<<1);
-    		Delay_us(20000);
-    	}
-    	else if(temperatura>=60){
-    		GPIOA->ODR |= (1<<1);
-		Delay_us(2400);
-		GPIOA->ODR &= ~(1<<1);
-		Delay_us(20000);
-    	}
-    	else{
-        	GPIOA->ODR |= (1<<1);
-    		Delay_us(final);
-    		GPIOA->ODR &= ~(1<<1);
-    		Delay_us(20000);
-    	}
-    	Delay_ms(100); //aguarda 100ms para fazer a nova leitura
-    }
+		if(temperatura<=35){
+			GPIOA->ODR |= (1<<1);
+			Delay_us(600);
+			GPIOA->ODR &= ~(1<<1);
+			Delay_us(20000);
+		}
+		else if(temperatura>=60){
+			GPIOA->ODR |= (1<<1);
+			Delay_us(2400);
+			GPIOA->ODR &= ~(1<<1);
+			Delay_us(20000);
+		}
+		else{
+			GPIOA->ODR |= (1<<1);
+			Delay_us(final);
+			GPIOA->ODR &= ~(1<<1);
+			Delay_us(20000);
+		}
+		Delay_ms(100); //aguarda 100ms para fazer a nova leitura
+	}
 }
