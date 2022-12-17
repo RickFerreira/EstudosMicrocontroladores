@@ -31,7 +31,7 @@ const uint16_t samples[200]={1861, 1876, 1892, 1907, 1923, 1938, 1953, 1969, 198
 			     2152, 2139, 2126, 2113, 2099, 2086, 2072, 2057, 2043, 2029,
 			     2014, 1999, 1984, 1969, 1953, 1938, 1923, 1907, 1892, 1876,
 			     1861, 1845, 1829, 1814, 1798, 1783, 1768, 1752, 1737, 1722,
-		    	     1707, 1692, 1678, 1664, 1649, 1635, 1622, 1608, 1595, 1582,
+		    	 1707, 1692, 1678, 1664, 1649, 1635, 1622, 1608, 1595, 1582,
 			     1569, 1556, 1544, 1532, 1521, 1510, 1499, 1488, 1478, 1469,
 			     1459, 1450, 1442, 1434, 1426, 1419, 1412, 1405, 1399, 1394,
 			     1389, 1384, 1380, 1376, 1373, 1371, 1368, 1367, 1365, 1365,
@@ -79,7 +79,7 @@ int main(void)
 	ADC->CCR |= (1 << 23);	    //liga o sensor de temperatura
 	ADC1->CR2 |= 1; 	   	    //liga o conversor AD
 
-    	//Chamando as funções de cada questão
+    //Chamando as funções de cada questão
 	//questao1();
 	//questao2();
 	//questao3();
@@ -135,17 +135,41 @@ void questao3()
 
 void questao4()
 {
+	RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;		//liga o clock do ADC1
+
+	GPIOA->MODER |= 0b11 << 0;				//pino PA0 como entrada analógica
+	GPIOA->MODER |= 0b11 << 2;				//pino PA1 como entrada analogica
+	GPIOA->MODER |= 0b01 << 4;				//pino PA0 como entrada analógica
+	GPIOA->MODER |= 0b01 << 6;				//pino PA1 como entrada analogica
+	
+	ADC->CCR |= 0b01 << 16;		//prescaler /4
+	ADC1->SQR1 &= ~(0xF << 20);	//conversão de apenas um canal
+	ADC1->SQR3 &= ~(0x1F);		//seleção do canal a ser convertido (IN_0)
+	ADC1->CR2 |= ADC_CR2_ADON;	//liga o conversor AD	
+	
     while(1)
     {
-		GPIOA->ODR |= (1<<1);
-		Delay_us(600);
-		GPIOA->ODR &= ~(1<<1);
-		Delay_us(20000);
+    	ADC1->SQR3 &= ~(0x1F);				//Canal para converter
+		ADC1->CR2 |= ADC_CR2_SWSTART;		//Conversão
+		while(!(ADC1->SR & ADC_SR_EOC));	//espera o fim da conversão
+		uint16_t valor = ADC1->DR;			//lê o valor convertido
 
-		GPIOA->ODR |= (1<<2);
-		Delay_us(600);
-		GPIOA->ODR &= ~(1<<2);
-		Delay_us(20000);
+		uint16_t angulo = 5600 + (valor * 0.43);
+		GPIOA->ODR |= (1 << 2);
+		Delay_us(angulo);
+		GPIOA->ODR &= ~ (1 << 2);
+		Delay_us(20000 - angulo);
+
+		ADC1->SQR3 |= 0x1;					//Canal para converter
+		ADC1->CR2 |= ADC_CR2_SWSTART;		//Conversão
+		while(!(ADC1->SR & ADC_SR_EOC));	//espera o fim da conversão
+		uint16_t value = ADC1->DR;			//lê o valor convertido
+
+		uint16_t grau = 600 + (value * 0.4);
+		GPIOA->ODR |= (1 << 3);
+		Delay_us(grau);
+		GPIOA->ODR &= ~ (1 << 3);
+		Delay_us(20000 - grau);
     }
 }
 
