@@ -10,6 +10,7 @@
 #include "Utility.h"   //Incluindo biblioteca para usar a funções adicionais
 #include <stdlib.h>    //Necessário para usar as funções printf e scanf
 #include "Audio.h"     //Chamando a pasta com os dados digtais de um audio
+#include "Som.h"     //Chamando a pasta com os dados digtais de um audio
 
 //definindo os pinos como ligado ou desligado
 #define PINO_4_ON GPIOA->ODR |= (1<<4) //Liga pino 4 do gpioA
@@ -55,15 +56,16 @@ int main(void)
 	Delay_Start();     //Inicia o temporizador interno da placa para ser usado
 
 	//Habilitando os clocks
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN; //habilita o clock do GPIOA
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN; //habilita o clock do GPIOA
 	RCC->APB1ENR |= RCC_APB1ENR_DACEN;   //habilita o clock da interface digital do DAC
 	RCC->APB2ENR |= 1 << 8;              //liga o clock da interface digital do ADC1
 
-    	//Inicia pino em modo analogico
-	GPIOA->MODER |= 0b11 << 8;	//inicialização o pino PA4 no modo analógico
-	GPIOA->MODER |= 0b11 << 10;	//inicialização o pino PA5 no modo analógico
+    //Inicia pino em modo analogico
+	GPIOA->MODER |= 0b11 << 8;		//inicialização o pino PA4 no modo analógico
+	GPIOA->MODER |= 0b11 << 10;		//inicialização o pino PA5 no modo analógico
 
-        GPIOA->MODER |= (0b01 << 2);    //configura o pino PA1 como saída (Servo motor)
+    GPIOA->MODER |= (0b01 << 2);    //configura o pino PA1 como saída (Servo motor)
+    GPIOA->MODER |= (0b01 << 4);    //configura o pino PA2 como saída (Servo motor)
 
 	//configuração DA
 	DAC->CR |= DAC_CR_BOFF1;	//desabilita o buffer analógico do DAC1
@@ -72,17 +74,17 @@ int main(void)
 	//configuração AD
 	ADC->CCR |= 0b01 << 16;     //prescaler /4
 	ADC1->SQR1 &= ~(0xF << 20); //conversão de apenas um canal
-	ADC1->SQR3 |= 16; 	    //seleção do canal a ser convertido (IN_16)
+	ADC1->SQR3 |= 16; 	    	//seleção do canal a ser convertido (IN_16)
 	ADC1->SMPR1 |= (7 << 18);   //tempo de amostragem igual a 480 ciclos de ADCCLK
 	ADC->CCR |= (1 << 23);	    //liga o sensor de temperatura
-	ADC1->CR2 |= 1; 	    //liga o conversor AD
+	ADC1->CR2 |= 1; 	   	    //liga o conversor AD
 
     	//Chamando as funções de cada questão
 	//questao1();
 	//questao2();
-	questao3();
+	//questao3();
 	//questao4();
-	//questao5();
+	questao5();
 }
 
 void questao1()
@@ -121,7 +123,12 @@ void questao3()
 		for(uint32_t contador=0; contador<sizeof(Audio); ++contador)
 		{
 			DAC->DHR8R1 = Audio[contador];	//escreve no DAC1
-			Delay_us(22);			//aguarda a próxima amostra
+			Delay_us(125);			        //aguarda a próxima amostra
+		}
+		for(uint32_t cont=0; cont<sizeof(Som); ++cont)
+		{
+			DAC->DHR8R1 = Som[cont];	//escreve no DAC1
+			Delay_us(22);			        //aguarda a próxima amostra
 		}
 	}
 }
@@ -130,7 +137,15 @@ void questao4()
 {
     while(1)
     {
+		GPIOA->ODR |= (1<<1);
+		Delay_us(600);
+		GPIOA->ODR &= ~(1<<1);
+		Delay_us(20000);
 
+		GPIOA->ODR |= (1<<2);
+		Delay_us(600);
+		GPIOA->ODR &= ~(1<<2);
+		Delay_us(20000);
     }
 }
 
